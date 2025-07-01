@@ -42,9 +42,9 @@ export const fetchProductsByFilters = createAsyncThunk(
 // Async thunk to Fetch a Single Product by ID
 export const fetchProductDetails = createAsyncThunk(
   'products/fetchProductDetails',
-  async productId => {
+  async id => {
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/products/${productId}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`
     )
     return response.data
   }
@@ -70,9 +70,9 @@ export const updateProduct = createAsyncThunk(
 //  Async thunk to fetch similar products
 export const fetchSimilarProducts = createAsyncThunk(
   'products/fetchSimilarProducts',
-  async ({ productId }) => {
+  async ({ id }) => {
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/products/similar/${productId}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/products/similar/${id}`
     )
     return response.data
   }
@@ -119,64 +119,64 @@ const productsSlice = createSlice({
         brand: '',
         collection: ''
       }
-    },
-    extraReducers: builder => {
-      builder
-        .addCase(fetchProductsByFilters.pending, state => {
-          state.loading = true
-          state.error = null
-        })
-        .addCase(fetchProductsByFilters.fulfilled, (state, action) => {
-          state.loading = false
-          state.products = Array.isArray(action.payload) ? action.payload : []
-        })
-        .addCase(fetchProductsByFilters.rejected, (state, action) => {
-          state.loading = false
-          state.error = action.error.message
-        })
-        .addCase(fetchProductDetails.pending, state => {
-          state.loading = true
-          state.error = null
-        })
-        .addCase(fetchProductDetails.fulfilled, (state, action) => {
-          state.loading = false
-          state.selectedProduct = action.payload
-        })
-        .addCase(fetchProductDetails.rejected, (state, action) => {
-          state.loading = false
-          state.error = action.error.message
-        })
-        .addCase(updateProduct.pending, state => {
-          state.loading = true
-          state.error = null
-        })
-        .addCase(updateProduct.fulfilled, (state, action) => {
-          state.loading = false
-          const updatedProduct = action.payload
-          const index = state.products.findIndex(
-            product => product._id === updatedProduct._id
-          )
-          if (index !== -1) {
-            state.products[index] = updatedProduct
-          }
-        })
-        .addCase(updateProduct.rejected, (state, action) => {
-          state.loading = false
-          state.error = action.error.message
-        })
-        .addCase(fetchSimilarProducts.pending, state => {
-          state.loading = true
-          state.error = null
-        })
-        .addCase(fetchSimilarProducts.fulfilled, (state, action) => {
-          state.loading = false
-          state.products = action.payload
-        })
-        .addCase(fetchSimilarProducts.rejected, (state, action) => {
-          state.loading = false
-          state.error = action.error.message
-        })
     }
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchProductsByFilters.pending, state => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchProductsByFilters.fulfilled, (state, action) => {
+        state.loading = false
+        state.products = Array.isArray(action.payload) ? action.payload : []
+      })
+      .addCase(fetchProductsByFilters.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      .addCase(fetchProductDetails.pending, state => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        state.loading = false
+        state.selectedProduct = action.payload
+      })
+      .addCase(fetchProductDetails.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      .addCase(updateProduct.pending, state => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false
+        const updatedProduct = action.payload
+        const index = state.products.findIndex(
+          product => product._id === updatedProduct._id
+        )
+        if (index !== -1) {
+          state.products[index] = updatedProduct
+        }
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      .addCase(fetchSimilarProducts.pending, state => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchSimilarProducts.fulfilled, (state, action) => {
+        state.loading = false
+        state.similarProducts = action.payload
+      })
+      .addCase(fetchSimilarProducts.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
   }
 })
 
