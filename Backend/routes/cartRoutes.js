@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
     } else {
       // If the cart does not exist, create a new one for guest or user
       const newCart = await Cart.create({
-        user: userId ?? undefined,
+        user: userId || undefined,
         guestId: guestId || 'guest_' + new Date().getTime(),
         products: [
           {

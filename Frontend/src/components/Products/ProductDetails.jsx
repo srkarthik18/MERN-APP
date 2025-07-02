@@ -35,7 +35,7 @@ const ProductDetails = ({ productId }) => {
     if (selectedProduct?.images?.length > 0) {
       setMainImage(selectedProduct.images[0].url)
     }
-  }, [])
+  }, [selectedProduct?.images])
 
   const handleQuantityChange = action => {
     if (action === 'plus') {
@@ -93,7 +93,7 @@ const ProductDetails = ({ productId }) => {
               {selectedProduct.images.map((image, index) => (
                 <img
                   key={index}
-                  src={image.url}
+                  src={image?.url}
                   alt={image.altTxt || `Thumbnail ${index}`}
                   className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
                     mainImage === image.url ? 'border-black' : 'border-gray-300'
@@ -117,7 +117,7 @@ const ProductDetails = ({ productId }) => {
               {selectedProduct.images.map((image, index) => (
                 <img
                   key={index}
-                  src={image.url}
+                  src={image?.url}
                   alt={image.altTxt || `Thumbnail ${index}`}
                   className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
                     mainImage === image.url ? 'border-black' : 'border-gray-300'
