@@ -10,10 +10,10 @@ const CartContent = ({ cart, userId, guestId }) => {
   const dispatch = useDispatch()
 
   // Handle adding or removing items from the cart
-  const handleAddToCart = (productId, delta, quantity, size, colour) => {
+  const handleAddToCart = async (productId, delta, quantity, size, colour) => {
     const newQuantity = quantity + delta
     if (newQuantity >= 1) {
-      dispatch(
+      await dispatch(
         updateCartItemQuantity({
           productId,
           quantity: newQuantity,

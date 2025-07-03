@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const UserManagement = () => {
-  const users = [
-    {
-      _id: 123,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      role: 'admin'
-    }
-  ]
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { user } = useSelector(state => state.auth)
+  const { users, loading, error } = useSelector(state => state.admin)
 
   const [formData, setFormData] = useState({
     name: '',

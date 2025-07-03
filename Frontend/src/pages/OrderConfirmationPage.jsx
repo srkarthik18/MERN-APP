@@ -1,36 +1,23 @@
-import React from 'react'
-
-const checkOut = {
-  _id: '1',
-  createdAt: new Date(),
-  checkoutItems: [
-    {
-      productId: '1',
-      name: 'Jacket',
-      color: 'black',
-      size: 'M',
-      quantity: 2,
-      price: 100,
-      image: 'https://picsum.photos/150?random=1'
-    },
-    {
-      productId: '2',
-      name: 'T-shirt',
-      color: 'black',
-      size: 'M',
-      quantity: 1,
-      price: 200,
-      image: 'https://picsum.photos/150?random=2'
-    }
-  ],
-  shippingAddress: {
-    address: '123 Fashion street',
-    city: 'New York',
-    country: 'USA'
-  }
-}
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { resetCart } from '../redux/slices/cartSlice'
 
 const OrderConfirmationPage = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { checkout } = useSelector(state => state.checkout)
+
+  // clear the cart when the order is confirmed
+  useEffect(() => {
+    if (checkout && checkout._id) {
+      dispatch(resetCart())
+      localStorage.removeItem('cart')
+    } else {
+      navigate('/my-orders')
+    }
+  }, [checkout, dispatch, navigate])
+
   const calculateEstimatedDelivery = createdAt => {
     const orderDate = new Date(createdAt)
     orderDate.setDate(orderDate.getDate() + 10)
@@ -42,26 +29,26 @@ const OrderConfirmationPage = () => {
       <h1 className='text-4xl font-bold text-center text-emerald-700 mb-8'>
         Thank You for Your Order..!
       </h1>
-      {checkOut && (
+      {checkout && (
         <div className='p-6 rounded-lg border'>
           <div className='flex justify-between mb-20'>
             <div>
               <h2 className='text-xl font-semibold'>
-                Order ID: {checkOut._id}
+                Order ID: {checkout._id}
               </h2>
               <p className='text-gray-500'>
-                Order date: {new Date(checkOut.createdAt).toLocaleDateString()}
+                Order date: {new Date(checkout.createdAt).toLocaleDateString()}
               </p>
             </div>
             <div>
               <p className='text-emerald-700 text-sm'>
                 Estimated Delivery:{' '}
-                {calculateEstimatedDelivery(checkOut.createdAt)}
+                {calculateEstimatedDelivery(checkout.createdAt)}
               </p>
             </div>
           </div>
           <div className='mb-20'>
-            {checkOut.checkoutItems.map(item => (
+            {checkout.checkoutItems.map(item => (
               <div className='flex items-center mb-4' key={item.productId}>
                 <img
                   src={item.image}
@@ -89,12 +76,12 @@ const OrderConfirmationPage = () => {
             <div>
               <h4 className='text-lg font-semibold mb-2'>Delivery</h4>
               <p className='text-gray-600'>
-                {checkOut.shippingAddress.address}
+                {checkout.shippingAddress.address}
               </p>
               <p className='text-gray-600'>
                 {' '}
-                {checkOut.shippingAddress.city},{' '}
-                {checkOut.shippingAddress.country}
+                {checkout.shippingAddress.city},{' '}
+                {checkout.shippingAddress.country}
               </p>
             </div>
           </div>

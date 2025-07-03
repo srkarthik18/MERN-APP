@@ -1,76 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fetchUserOrders } from '../redux/slices/orderSlice'
+import { useSelector, useDispatch } from 'react-redux'
 
 const MyOrderPage = () => {
-  const [orders, setOrders] = useState([])
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { orders, loading, error } = useSelector(state => state.orders)
 
   useEffect(() => {
-    setTimeout(() => {
-      const mockOrder = [
-        {
-          _id: '1',
-          createdAt: new Date(),
-          shippingAddress: {
-            address: '123 Main St',
-            city: 'Anytown',
-            state: 'CA',
-            zip: '12345'
-          },
-          orderItems: [
-            {
-              name: 'Product 1',
-              image: 'https://picsum.photos/500/500?random=1'
-            }
-          ],
-          totalPrice: 100,
-          isPaid: true
-        },
-        {
-          _id: '2',
-          createdAt: new Date(),
-          shippingAddress: {
-            address: '456 Elm St',
-            city: 'Othertown',
-            state: 'NY',
-            zip: '67890'
-          },
-          orderItems: [
-            {
-              name: 'Product 2',
-              image: 'https://picsum.photos/500/500?random=2'
-            }
-          ],
-          totalPrice: 200,
-          isPaid: false
-        },
-        {
-          _id: '3',
-          createdAt: new Date(),
-          shippingAddress: {
-            address: '789 Oak St',
-            city: 'Sometown',
-            state: 'TX',
-            zip: '54321'
-          },
-          orderItems: [
-            {
-              name: 'Product 3',
-              image: 'https://picsum.photos/500/500?random=3'
-            }
-          ],
-          totalPrice: 300,
-          isPaid: true
-        }
-      ]
-
-      setOrders(mockOrder)
-    }, 1000)
-  }, [])
+    dispatch(fetchUserOrders())
+  }, [dispatch])
 
   const handleRowClick = orderId => {
     navigate(`/order/${orderId}`)
   }
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error fetching orders: {error.message}</div>
 
   return (
     <div className='max-w-7xl mx-auto p-4 sm:p-6'>
@@ -111,8 +58,8 @@ const MyOrderPage = () => {
                     {new Date(order.createdAt).toLocaleTimeString()}
                   </td>
                   <td className='py-2 px-2 sm:py-4 sm:px-4 font-medium text-gray-700 whitespace-nowrap'>
-                    {order.shippingAddress
-                      ? `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.state}`
+                    {order?.shippingAddress
+                      ? `${order?.shippingAddress?.address}, ${order?.shippingAddress?.city}, ${order?.shippingAddress?.country}`
                       : 'N/A'}
                   </td>
                   <td className='py-2 px-2 sm:py-4 sm:px-4 font-medium text-gray-700 whitespace-nowrap'>
