@@ -71,15 +71,12 @@ export const deleteProduct = createAsyncThunk(
   'adminProducts/deleteProduct',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(
-        `${API_URL}/api/admin/products/${id}`,
-        {
-          headers: {
-            Authorization: USER_TOKEN
-          }
+      await axios.delete(`${API_URL}/api/products/${id}`, {
+        headers: {
+          Authorization: USER_TOKEN
         }
-      )
-      return response.data
+      })
+      return id
     } catch (error) {
       console.error('Error deleting admin product:', error)
       return rejectWithValue(error.response.data)

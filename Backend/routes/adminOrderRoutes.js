@@ -25,7 +25,7 @@ router.put('/:id', protect, protectAdmin, async (req, res) => {
   const { status } = req.body
 
   try {
-    let order = await Order.findById(orderId)
+    let order = await Order.findById(orderId).populate('user', 'name')
 
     if (order) {
       order.status = status || order.status // Update status if provided

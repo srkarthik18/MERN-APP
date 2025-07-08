@@ -50,7 +50,7 @@ export const updateUser = createAsyncThunk(
           }
         }
       )
-      return response.data
+      return response.data.user
     } catch (error) {
       console.error('Error updating user:', error)
       return rejectWithValue(error.response.data)
@@ -63,7 +63,7 @@ export const deleteUser = createAsyncThunk(
   'admin/deleteUser',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/${id}`,
         {
           headers: {
@@ -71,7 +71,7 @@ export const deleteUser = createAsyncThunk(
           }
         }
       )
-      return response.data
+      return id
     } catch (error) {
       console.error('Error deleting user:', error)
       return rejectWithValue(error.response.data)

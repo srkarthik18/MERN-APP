@@ -10,7 +10,7 @@ const OrderConfirmationPage = () => {
 
   // clear the cart when the order is confirmed
   useEffect(() => {
-    if (checkout && checkout._id) {
+    if (checkout?._id) {
       dispatch(resetCart())
       localStorage.removeItem('cart')
     } else {
