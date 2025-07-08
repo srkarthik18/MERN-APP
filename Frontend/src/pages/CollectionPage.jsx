@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FaFilter } from 'react-icons/fa'
 import FilterSideBar from '../components/Products/FilterSideBar'
-import SortOption from './sortOption'
 import ProductGrid from '../components/Products/ProductGrid'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductsByFilters } from '../redux/slices/productsSlice'
+import SortOption from './SortOption'
 
 const CollectionPage = () => {
   const { collection } = useParams()
